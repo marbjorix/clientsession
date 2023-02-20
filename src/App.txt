@@ -1,0 +1,85 @@
+// import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
+import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom'
+import { useContext } from 'react';
+
+import DefaultLayout from './layout/DefaultLayout';
+import ProductsAdmin from './pages/admin/ProductsAdmin';
+import HomeAdmin from './pages/admin/HomeAdmin';
+import Contact from './pages/Contact';
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
+import Products from './pages/Products';
+import AdminLayout from './layout/AdminLayout';
+import Login from './pages/Login';
+import ProductsCreate from './pages/admin/ProductsCreate';
+
+import './App.scss';
+
+// Kontrol af login + afvisning til admin-del kan sættes her - eller i AdminLayout
+import {LoginContext} from './context/LoginContext';
+
+
+// const router = createBrowserRouter(
+//   createRoutesFromElements(
+//     <>
+
+//       {/* PUBLIC */ }
+//       <Route path="/" element={ <DefaultLayout /> }>
+//         <Route index element={ <Home /> } />
+//         <Route path="contact" element={ <Contact /> } />
+//         <Route path="products" element={ <Products /> } />
+//         <Route path="login" element={ <Login /> } />
+//         <Route path="*" element={ <NotFound /> } />
+//       </Route>
+
+//       {/* ADMIN */ }
+//       <Route path="/admin" element={ <AdminLayout /> }>
+//         <Route index element={ <HomeAdmin /> } />
+//         <Route path="productsadmin" element={ <ProductsAdmin /> } />
+//         <Route path="productscreate" element={ <ProductsCreate /> } />
+//       </Route>
+
+//     </>
+
+//   )
+// )
+
+function App () {
+
+  const { adminUser } = useContext( LoginContext )
+
+
+  return (
+    // <RouterProvider router={ router } />
+
+    <div className="app">
+
+      <BrowserRouter>
+        <Routes>
+
+          {/* PUBLIC */ }
+          <Route path="/" element={ <DefaultLayout /> }>
+            <Route index element={ <Home /> } />
+            <Route path="contact" element={ <Contact /> } />
+            <Route path="products" element={ <Products /> } />
+            <Route path="login" element={ <Login /> } />
+            <Route path="*" element={ <NotFound /> } />
+          </Route>
+
+          {/* ADMIN */ }
+          <Route path="/admin" element={ adminUser ? <AdminLayout /> : <Navigate to="/login"/> }>
+            <Route index element={ <HomeAdmin /> } />
+            <Route path="productsadmin" element={ <ProductsAdmin /> } />
+            <Route path="productscreate" element={ <ProductsCreate /> } />
+          </Route>
+
+        </Routes>
+      </BrowserRouter>
+
+    </div>
+
+  );
+}
+
+
+export default App;
